@@ -16,8 +16,11 @@ class PersonController extends Controller
     public function index()
     {
         $data = Person::with('district')->get();
-        return view('admin.person.table', compact('data'));
+        $districts = District::all(); // Fetch all districts
+
+        return view('admin.person.table', compact('data', 'districts'));
     }
+
 
     public function add()
     {
@@ -72,20 +75,21 @@ class PersonController extends Controller
             'education' => 'required',
             'result' => 'required',
         ]);
-
+    
         $data = Person::findOrFail($request->id);
         $data->name = $request->name;
         $data->dob = $request->dob;
-        $data->district_id = $request->district_id; // Ensure this matches your form and table field
+        $data->district_id = $request->district_id;
         $data->phone = $request->phone;
         $data->gender = $request->gender;
         $data->occupation = $request->occupation;
         $data->education = $request->education;
         $data->result = $request->result;
         $data->save();
-
+    
         return redirect()->route('admin.person.table')->with('success', 'Updated successfully.');
     }
+    
 
     public function destroy($id)
     {
