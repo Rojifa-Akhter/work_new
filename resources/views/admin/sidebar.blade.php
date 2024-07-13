@@ -8,7 +8,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="pb-3 mt-3 mb-3 user-panel d-flex">
         <div class="image">
           <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
@@ -48,7 +48,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-edit"></i>
               <p>
-                 Forms for Person
+                 Forms
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -56,7 +56,13 @@
               <li class="nav-item">
                 <a href="{{ url('/person/add') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Add person</p>
+                  <p>person Form</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('/member/form') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Member Form</p>
                 </a>
               </li>
               

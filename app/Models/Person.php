@@ -10,7 +10,7 @@ class Person extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'dob', 'district_id', 'phone', 'gender', 'occupation', 'education', 'result',
+        'name', 'dob', 'district_id', 'phone', 'gender', 'occupation', 'education', 'result','image',
     ];
 
     public function district()

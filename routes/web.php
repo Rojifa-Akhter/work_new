@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PersonController;
 use Illuminate\Support\Facades\Route;
 
@@ -43,3 +44,8 @@ Route::group(['prefix' => '/person'], function () {
     Route::post('/update', [PersonController::class, 'update'])->name('admin.person.update');
     Route::get('/delete/{id}', [PersonController::class, 'destroy'])->name('delete');
 });
+
+Route::group(['prefix' => '/member'], function () {
+    Route::get('/', [MemberController::class, 'index'])->name('admin.member.form');
+});
+

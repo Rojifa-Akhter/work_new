@@ -31,30 +31,37 @@ class PersonController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'dob' => 'required',
-            'district_id' => 'required|exists:districts,id',
-            'phone' => 'required',
-            'gender' => 'required',
-            'occupation' => 'required',
-            'education' => 'required',
-            'result' => 'required',
+            'name' => 'required|string|max:255',
+            'dob' => 'required|date',
+            'district_id' => 'required|integer',
+            'phone' => 'required|string|max:15',
+            'gender' => 'required|string|max:10',
+            'occupation' => 'required|string|max:255',
+            'education' => 'required|string|max:255',
+            'result' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        $data = [
-            'name' => $request->name,
-            'dob' => $request->dob,
-            'district_id' => $request->district_id,
-            'phone' => $request->phone,
-            'gender' => $request->gender,
-            'occupation' => $request->occupation,
-            'education' => $request->education,
-            'result' => $request->result,
-        ];
+        $person = new Person();
+        $person->name = $request->name;
+        $person->dob = $request->dob;
+        $person->district_id = $request->district_id;
+        $person->phone = $request->phone;
+        $person->gender = $request->gender;
+        $person->occupation = $request->occupation;
+        $person->education = $request->education;
+        $person->result = $request->result;
 
-        Person::create($data); // Use create instead of insert for mass assignment
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+            $person->image = $imageName;
+        }
 
-        return redirect()->route('admin.person.table')->with('message', 'Added successfully!');
+        $person->save();
+
+        return redirect()->back()->with('success', 'Person added successfully');
     }
     public function edit($id)
     {
@@ -66,30 +73,40 @@ class PersonController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'dob' => 'required',
-            'district_id' => 'required|exists:districts,id',
-            'phone' => 'required',
-            'gender' => 'required',
-            'occupation' => 'required',
-            'education' => 'required',
-            'result' => 'required',
+            'id' => 'required|integer',
+            'name' => 'required|string|max:255',
+            'dob' => 'required|date',
+            'district_id' => 'required|integer',
+            'phone' => 'required|string|max:15',
+            'gender' => 'required|string|max:10',
+            'occupation' => 'required|string|max:255',
+            'education' => 'required|string|max:255',
+            'result' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
-    
-        $data = Person::findOrFail($request->id);
-        $data->name = $request->name;
-        $data->dob = $request->dob;
-        $data->district_id = $request->district_id;
-        $data->phone = $request->phone;
-        $data->gender = $request->gender;
-        $data->occupation = $request->occupation;
-        $data->education = $request->education;
-        $data->result = $request->result;
-        $data->save();
-    
-        return redirect()->route('admin.person.table')->with('success', 'Updated successfully.');
+
+        $person = Person::find($request->id);
+        $person->name = $request->name;
+        $person->dob = $request->dob;
+        $person->district_id = $request->district_id;
+        $person->phone = $request->phone;
+        $person->gender = $request->gender;
+        $person->occupation = $request->occupation;
+        $person->education = $request->education;
+        $person->result = $request->result;
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+            $person->image = $imageName;
+        }
+
+        $person->save();
+
+        return redirect()->back()->with('success', 'Person updated successfully');
     }
-    
+
 
     public function destroy($id)
     {
